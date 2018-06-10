@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+  <script type="text/javascript" src='<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js'></script>
+  <script type="text/javascript" src='<?php echo base_url(); ?>assets/js/bootstrap.min.js'></script>
+  <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css"></link> -->
+  <title>Mahasiswa | isi kuisioner</title>
+    <style>
+    body{
+    background-color: #F1F1F1;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .wrapper{
+      width: 40%;
+      background-color: white;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 10%;
+      margin-bottom: auto;
+      padding-top: 10px;
+      padding-bottom: 10px;
+  }
+  .side-bar{
+      width: 20%;
+      height: 580px;
+      background-color: white;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+      padding-bottom: 10px;
+      float: left;
+  }
+  .container{
+      width: 75%;
+      height: auto;
+      background-color: white;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      float: left;
+      margin-left: 2%;
+      margin-top: 2%;
+  }
+  .header{
+    width: 80%;
+    height: 50px;
+    background-color: white;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+    float: left;
+    padding: 10px;
+  }
+  .component-side{
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+  }
+  .component-side:hover{
+    cursor: pointer;
+    background-color: #F1F1F1;
+  }
+   .component-side-profile{
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    background-color: #F1F1F1;
+  }
+  .input{
+    width: 100%;
+    height: 40px;
+    background-color: #F1F1F1;  
+  }
+  
+  </style>
+</head>
+<body >
+  <div class="side-bar">
+      <div class="component-side-profile">
+        
+      </div>
+      <div class="component-side">
+        Isi kuisioner
+      </div>
+       <div class="component-side">
+        Matakuliah
+      </div>
+       <div class="component-side">
+        Dosen
+      </div>
+       <div class="component-side">
+        Data krs
+      </div>
+       <div class="component-side">
+        Kelas
+      </div>
+  </div>
+  <div class="header">
+    <div>Kuisioner</div>
+  </div>
+  <div class="container">
+    <div>
+      <?php
+        $decodeUrl = urldecode($nama_dosen);
+        $matkul = urldecode($matkul);
+        echo '
+          Nama dosen : '.$decodeUrl.'<br>
+          Matakuliah : '.$matkul.'
+          <input type="hidden" id="nik" value="'.$nik.'" name="">
+        ';
+      ?>
+    </div>
+    <div>
+      <?php
+        if($kuis == 1){
+          echo 'Anda sudah mengisi kuisioner ini';
+        }
+        else{
+        echo '
+             <table id="jurusan-tabel" class="table table-hover" style="margin-top: 2%;">
+              <thead>
+                <th>No.</th>
+                <th>Pilihan</th>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+                <th>D</th>
+              </thead>
+              <tbody> ';
+               
+                  if(isset($pilihan)){
+                      $i=0;
+                      foreach($pilihan as $row){
+                        $i++;
+                        echo '
+                          <tr>
+                            <td>'.$i.'</td>
+                            <td>'.$row["pilihan"].'</td>
+                            <form action="">
+                              <div id="pilihan">
+                              <td>
+                                <input type="radio" name="'.$i.'" value="A">
+                              </td>
+                              <td>
+                                <input type="radio" name="'.$i.'" value="B">
+                              </td>
+                               <td>
+                                <input type="radio" name="'.$i.'" value="C">
+                              </td>
+                              <td>
+                                <input type="radio" name="'.$i.'" value="D">
+                              </td>
+                              </div>
+                            </form>
+                          </tr>
+                        ';
+                      }
+                    echo '
+                      <input type="hidden" id="nomer" value="'.$i.'">
+
+                    ';
+                  }
+             echo '   
+              </tbody>
+            </table>
+        ';
+      }
+      ?>
+    </div>
+    
+    <input type="hidden" id="no1">
+     <input type="hidden" id="no2">
+      <input type="hidden" id="no3">
+       <input type="hidden" id="no4">
+        <input type="hidden" id="no5">
+     <?php
+        if($kuis == 1){
+         
+        }
+        else{
+        echo '
+          <button class="btn btn-success" id="simpan">Simpan</button>
+          ';
+        }
+      ?>
+  </div>
+
+  <script type="text/javascript">
+    function showModal(nik){
+       var nama = $('#nama-'+nik).val();
+       var matkul = $("#matkul-"+nik).val();
+       document.location.href = "<?php echo site_url('c_auth/isi_kuisoner/'); ?>"+nama+"/"+matkul;
+    }
+
+    $(document).ready(function(){
+      $("#pilihan").click(function(){
+        alert("as");
+      });
+
+      $("input[type=radio][name=1]").click(function(){
+          var nilai1 = this.value;
+          $("#no1").val(nilai1);
+      });
+      $("input[type=radio][name=2]").click(function(){
+          var nilai2 = this.value;
+          $("#no2").val(nilai2);
+      });
+      $("input[type=radio][name=3]").click(function(){
+          var nilai3 = this.value;
+          $("#no3").val(nilai3);
+      });
+      $("input[type=radio][name=4]").click(function(){
+          var nilai4 = this.value;
+          $("#no4").val(nilai4);
+      });
+      $("input[type=radio][name=5]").click(function(){
+          var nilai5 = this.value;
+          $("#no5").val(nilai5);
+      });
+
+      $("#simpan").click(function(){
+        var n1 = $("#no1").val();
+        var n2 = $("#no2").val();
+        var n3= $("#no3").val();
+        var n4 = $("#no4").val();
+        var n5 = $("#no5").val();
+        var nik = $("#nik").val();
+
+        $.ajax({
+          method : "POST",
+          url : "<?php echo site_url('c_auth/isi_kuisioner') ?>",
+          data : {
+            'n1' : n1,
+            'n2' : n2,
+            'n3' : n3,
+            'n4' : n4,
+            'n5' : n5,
+            'nik' : nik
+          },
+          dataType : 'json',
+          success : function(res){
+              alert(res);
+          },
+          error : function(err){
+
+          }
+        });
+      });
+
+    });
+  </script>
+</body>
+</html>

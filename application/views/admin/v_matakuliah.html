@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+  <script type="text/javascript" src='<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js'></script>
+  <script type="text/javascript" src='<?php echo base_url(); ?>assets/js/bootstrap.min.js'></script>
+  <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css"></link> -->
+  <title>Admin | Matkul</title>
+    <style>
+    body{
+    background-color: #F1F1F1;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .wrapper{
+      width: 40%;
+      background-color: white;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 10%;
+      margin-bottom: auto;
+      padding-top: 10px;
+      padding-bottom: 10px;
+  }
+  .side-bar{
+      width: 20%;
+      height: 580px;
+      background-color: white;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+      padding-bottom: 10px;
+      float: left;
+  }
+  .container{
+      width: 75%;
+      height: auto;
+      background-color: white;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      float: left;
+      margin-left: 2%;
+      margin-top: 2%;
+  }
+  .header{
+    width: 80%;
+    height: 50px;
+    background-color: white;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+    float: left;
+    padding: 10px;
+  }
+  .component-side{
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+  }
+  .component-side:hover{
+    cursor: pointer;
+    background-color: #F1F1F1;
+  }
+   .component-side-profile{
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    background-color: #F1F1F1;
+  }
+  .input{
+    width: 100%;
+    height: 40px;
+    background-color: #F1F1F1;  
+  }
+  
+  </style>
+</head>
+<body >
+  <div class="side-bar">
+     <div class="component-side-profile">
+        
+      </div>
+      <div class="component-side">
+        <a href="<?php echo site_url('admin/c_admin/jurusan'); ?>">Jurusan</a>
+      </div>
+       <div class="component-side">
+        <a href="<?php echo site_url('admin/c_admin/matakuliah'); ?>">Matakuliah</a>
+      </div>
+       <div class="component-side">
+        <a href="<?php echo site_url('admin/c_admin/pilihan'); ?>">Pilihan kuisioner</a>
+      </div>
+       <div class="component-side">
+        <a href="<?php echo site_url('admin/c_admin/kelas'); ?>">Kelas</a>
+      </div>
+  </div>
+  <div class="header">
+    <div>Matakuliah</div>
+  </div>
+  <div class="container">
+    <button class="btn btn-secondary" onclick="tambah_matkul()">tambah matakuliah</button>
+    <table id="jurusan-tabel" class="table table-hover" style="margin-top: 2%;">
+      <thead>
+        <th>No.</th>
+        <th>id matakuliah</th>
+        <th>Nama matakuliah</th>
+      </thead>
+      <tbody>
+         <?php
+          if($matkul){
+              $i=0;
+              foreach($matkul as $row){
+                $i++;
+                echo '
+                  <tr>
+                    <td>'.$i.'</td>
+                    <td>'.$row["kode_matakuliah"].'</td>
+                    <td>'.$row["nama_matakuliah"].'</td>
+                  </tr>
+                ';
+            }
+            echo '
+              <input type="hidden" id="nomer" value="'.$i.'">
+            ';
+          }
+        ?>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add New Event Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+               <label>Kode matakuliah</label>
+              <input class="form-control" id="kode" type="text" >
+              <label>Nama matakuliah</label>
+              <input class="form-control" id="nama-matkul" type="text" >
+              <label>Jurusan</label>
+              <select class="form-control" id="jurusan">
+                <?php
+                  foreach($jurusan as $row){
+                    echo '
+                      <option value="'.$row['id_jurusan'].'">'.$row["nama_jurusan"].'</option>
+                    ';
+                  }
+                ?>
+              </select> 
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="tambah">Tambah</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <script type="text/javascript">
+    function tambah_matkul(){
+        $("#exampleModal").modal('show');
+    }
+
+    function tambah(){
+      var kode = $("#kode").val();
+      var nama = $("#nama-matkul").val();
+      var jurusan = $("#jurusan").val();
+
+      if(kode || nama){
+          $.ajax({
+          method : "POST",
+          url : "<?php echo site_url('admin/c_admin/tambah_matkul'); ?>",
+          data : {
+            "kode" : kode,
+            "nama" : nama,
+            "jurusan" : jurusan
+          },
+          dataType : "json",
+          success : function(res){
+               var nomer = +$("#nomer").val() + 1;
+              $('#jurusan-tabel > tbody').append(''+
+                   '<tr>'+
+                    '<td>'+nomer+'</td>'+
+                    '<td>'+res[0].kode_matakuliah+'</td>'+
+                    '<td>'+res[0].nama_matakuliah+'</td>'+
+                  '</tr>'
+                +'');
+              $("#exampleModal").modal('hide');
+          },
+          error : function(err){
+            alert(err);
+          }
+        });
+      }
+      else{
+        alert("Semua data harus terisi");
+      }
+    }
+
+    $(document).ready(function(){
+      $('#tambah').click(function(){
+        tambah();
+      });
+    });
+  </script>
+</body>
+</html>

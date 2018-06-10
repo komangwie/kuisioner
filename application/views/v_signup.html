@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+	<script type="text/javascript" src='<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js'></script>
+	<script type="text/javascript" src='<?php echo base_url(); ?>assets/js/bootstrap.min.js'></script>
+	<link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css"></link> -->
+	<title>Mahasiswa | daftar</title>
+    <style>
+   		body{
+		background-color: #F1F1F1;
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		width: 100%;
+	}
+	.wrapper{
+	    width: 40%;
+	    background-color: white;
+	    box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+	    margin-left: auto;
+	    margin-right: auto;
+	    margin-top: 10%;
+	    margin-bottom: auto;
+	    padding-top: 10px;
+	    padding-bottom: 10px;
+	}
+	.input{
+		width: 100%;
+		height: 40px;
+		background-color: #F1F1F1;	
+	}
+	
+	</style>
+</head>
+<body >
+	<div class="wrapper">
+		<table border="0px solid black" align="center" style="text-align: center; width: 90%;">
+			
+			<tr>
+				<td><h2>Sign In</h2></td>
+			</tr>
+			<tr>
+				<td style="padding-top: 10px; text-align:">Nim :</td>
+			</tr>
+			<tr>
+				<td style="text-align: center;">
+					<input type="text" id="nim" class="form-control input">
+				</td>
+			</tr>
+			<tr>
+				<td style="padding-top: 10px; text-align:">username :</td>
+			</tr>
+			<tr>
+				<td style="text-align: center;">
+					<input type="text" id="username" class="form-control input">
+				</td>
+			</tr>
+			<tr >
+				<td style="padding-top: 10px;">Password :</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="password" name="" id="password" class="form-control input">
+				</td>
+			</tr>
+			<tr>
+				<td style="padding-top: 15px;">
+					<button class="btn btn-primary" style="background: linear-gradient(to right, #1AADEB , #09F0B0) !important; border-width: 0px; border-radius: 20px; width: 300px;" id="btn-login">Signup</button>
+				</td>
+			</tr>
+		</table>
+		
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#btn-login").click(function(){
+				var nim = $("#nim").val();
+				var username = $("#username").val();
+				var password = $("#password").val();
+				if(!nim || !username || !password){
+					alert("Pastikan semua data telah terisi!");
+				}
+				else{
+						// document.location.href = "<?php echo site_url('c_auth/goto_home');?>";
+					$.ajax({
+						method : "POST",
+						url : "<?php echo site_url('c_auth/daftar'); ?>",
+						data : {"nim" : nim, "username" : username, "password" : password},
+						dataType : 'json',
+						success: function(res){
+							alert(res);
+							// if(res == "ok"){
+							// 	document.location.href = "<?php echo site_url('c_home');?>";
+							// }
+							// else{
+							// 	alert("wrong username or password");
+							// }
+						},
+						error : function(err){
+							console.log(err);
+						}
+					});
+				}
+			});
+		});
+	</script>
+</body>
+</html>

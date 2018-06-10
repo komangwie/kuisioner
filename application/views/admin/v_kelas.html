@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+  <script type="text/javascript" src='<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js'></script>
+  <script type="text/javascript" src='<?php echo base_url(); ?>assets/js/bootstrap.min.js'></script>
+  <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css"></link> -->
+  <title>Admin | Kelas</title>
+    <style>
+    body{
+    background-color: #F1F1F1;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .wrapper{
+      width: 40%;
+      background-color: white;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 10%;
+      margin-bottom: auto;
+      padding-top: 10px;
+      padding-bottom: 10px;
+  }
+  .side-bar{
+      width: 20%;
+      height: 580px;
+      background-color: white;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+      padding-bottom: 10px;
+      float: left;
+  }
+  .container{
+      width: 75%;
+      height: auto;
+      background-color: white;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      float: left;
+      margin-left: 2%;
+      margin-top: 2%;
+  }
+  .header{
+    width: 80%;
+    height: 50px;
+    background-color: white;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+    float: left;
+    padding: 10px;
+  }
+  .component-side{
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+  }
+  .component-side:hover{
+    cursor: pointer;
+    background-color: #F1F1F1;
+  }
+   .component-side-profile{
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    background-color: #F1F1F1;
+  }
+  .input{
+    width: 100%;
+    height: 40px;
+    background-color: #F1F1F1;  
+  }
+  
+  </style>
+</head>
+<body >
+  <div class="side-bar">
+       <div class="component-side-profile">
+        
+      </div>
+      <div class="component-side">
+        <a href="<?php echo site_url('admin/c_admin/jurusan'); ?>">Jurusan</a>
+      </div>
+       <div class="component-side">
+        <a href="<?php echo site_url('admin/c_admin/matakuliah'); ?>">Matakuliah</a>
+      </div>
+       <div class="component-side">
+        <a href="<?php echo site_url('admin/c_admin/pilihan'); ?>">Pilihan kuisioner</a>
+      </div>
+       <div class="component-side">
+        <a href="<?php echo site_url('admin/c_admin/kelas'); ?>">Kelas</a>
+      </div>
+  </div>
+  <div class="header">
+    <div>Kelas</div>
+  </div>
+  <div class="container">
+    <button class="btn btn-secondary" onclick="tambah_matkul()">tambah kelas</button>
+    <table id="jurusan-tabel" class="table table-hover" style="margin-top: 2%;">
+      <thead>
+        <th>No.</th>
+        <th>id kelas</th>
+        <th>nama kelas</th>
+        <th>Matakuliah</th>
+        <th>Tahun</th>
+        <th>Semester</th>
+        <th>Dosen</th>
+      </thead>
+      <tbody>
+         <?php
+          if(isset($kelas)){
+              $i=0;
+              foreach($kelas as $row){
+                $i++;
+                echo '
+                  <tr>
+                    <td>'.$i.'</td>
+                    <td>'.$row["id_kelas"].'</td>
+                    <td>'.$row["nama_kelas"].'</td>
+                    <td>'.$row["nama_matakuliah"].'</td>
+                    <td>'.$row["tahun"].'</td>
+                    <td>'.$row["semester"].'</td>
+                    <td>'.$row["nama_dosen"].'</td>
+                  </tr>
+                ';
+            }
+            echo '
+              <input type="hidden" id="nomer" value="'.$i.'">
+            ';
+          }
+        ?>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add New Event Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <label>Nama kelas</label>
+              <input class="form-control" id="nama-kelas" type="text" >
+
+              <label>Matakuliah</label>
+              <select class="form-control" id="matkul">
+                <?php
+                  foreach($matkul as $row){
+                    echo '
+                      <option value="'.$row['kode_matakuliah'].'">'.$row["nama_matakuliah"].'</option>
+                    ';
+                  }
+                ?>
+              </select> 
+
+               <label>Tahun</label>
+              <select class="form-control" id="tahun">
+                <?php
+                  $i = 2010;
+                  for($j=0; $j< 8; $j++){
+                  $i++;
+                    echo '
+                    <option value="'.$i.'">'.$i.'</option>
+                    ';
+                  }
+                ?>
+              </select> 
+
+              <label>Semester</label>
+               <select class="form-control" id="semester">
+                  <option value="ganjil">ganjil</option>
+                  <option value="genap">genap</option>
+              </select> 
+
+               <label>Dosen</label>
+               <select class="form-control" id="dosen">
+                 <?php
+                    foreach($dosen as $row){
+                      echo '
+                        <option value="'.$row['nik'].'">'.$row["nama_dosen"].'</option>
+                      ';
+                  }
+                 ?>
+              </select> 
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="tambah">Tambah</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <script type="text/javascript">
+    function tambah_matkul(){
+        $("#exampleModal").modal('show');
+    }
+
+    function tambah(){
+      var matkul = $('#matkul').val();
+      var tahun = $('#tahun').val();
+      var semester = $('#semester').val();
+      var dosen = $('#dosen').val();
+      var nama = $('#nama-kelas').val();
+      if(nama){
+          $.ajax({
+          method : "POST",
+          url : "<?php echo site_url('admin/c_admin/tambah_kelas'); ?>",
+          data : {
+            "matkul" : matkul,
+            "tahun" : tahun,
+            "semester" : semester,
+            "dosen" : dosen,
+            "nama" : nama
+          },
+          dataType : "json",
+          success : function(res){
+              alert(res);
+          },
+          error : function(err){
+            alert(err);
+          }
+        });
+      }
+      else{
+        alert("nama kelas tidak boleh kosong!");
+      }
+    }
+
+    $(document).ready(function(){
+      $('#tambah').click(function(){
+        tambah();
+      });
+    });
+  </script>
+</body>
+</html>
